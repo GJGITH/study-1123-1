@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+	<bean id="myDataSource" class="org.apache.commons.dbcp2.BasicDataSource"
+		destroy-method="close"><!-- 容器关闭之前要执行close方法 -->
+		<property name="driverClassName" value="org.mariadb.jdbc.Driver" />
+		<property name="url" value="jdbc:mariadb://localhost:3306/app" />
+		<property name="username" value="root" />
+		<property name="password" value="123456" />
+	</bean>
+	<bean id="ComplexObject" class="com.example1.ComplexObject">
+	<!-- results in a setAdminEmails(java.util.Properties) call -->
+		 <property name="adminEmails">
+			<props>
+				<prop key="administrator">administrator@example.org</prop>
+				<prop key="support">support@example.org</prop>
+				<prop key="development">development@example.org</prop>
+			</props>
+		</property> 
+	<!-- results in a setSomeList(java.util.List) call -->
+		<property name="someList">
+			<list>
+			<value>aaaa somgList</value>
+			<ref bean="myDataSource" />
+			</list>
+		</property>
+	<!-- results in a setSomeMap(java.util.Map) call -->
+		 <property name="someMap">
+			<map>
+			<entry key="an entry" value="just some string"/>
+			<entry key ="a ref" value-ref="myDataSource"/>
+			</map>
+		</property> 
+	<!-- results in a setSomeSet(java.util.Set) call -->
+	  	<property name="someSet">
+			<set>
+			<value>just some string</value>
+			<ref bean="myDataSource" />
+			</set>
+		</property> 
+	</bean>
+</beans>
